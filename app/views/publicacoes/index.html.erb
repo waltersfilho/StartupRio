@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<% @publicacoes.each do |publicacao| %>
+<div class="link row clearfix">
+  <div>
+    <h2>
+      <%= link_to publicacao.titulo, publicacao %><br>
+      <small class="author">Enviado há <strong><%= time_ago_in_words(publicacao.updated_at) %> atrás por
+      <% if publicacao.user == current_user %>
+          você
+      <% else %>
+          <%= publicacao.user.email %></strong>
+      <%end%>
+      </small>
+    </h2>
+    <div class="lead">
+      <%= simple_format(truncate(strip_tags(publicacao.corpo), length: 160)) %>
+    </div>
+  </div>
+  <div class="btn-group " role="group" aria-label="...">
+    <%if user_signed_in? %>
+    <%= link_to like_publicacao_path(publicacao), method: :put, class: "btn btn-default" do %>
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        Like
+        <%= publicacao.get_upvotes.size %>
+    <% end %>
+    <%= link_to dislike_publicacao_path(publicacao), method: :put, class: "btn btn-default " do %>
+        <span class="glyphicon glyphicon-thumbs-down"></span>
+        Dislike
+        <%= publicacao.get_downvotes.size %>
+    <% end %>
+    <%end%>
+
+    <%if current_user == publicacao.user%>
+      <%= link_to 'Editar Post', edit_publicacao_path(publicacao), class: 'btn btn-default' %>
+      <%= link_to 'Apagar Post'.html_safe, publicacao, method: :delete, data: { confirm: 'Tem certeza?' }, class: 'btn btn-default' %>
+    <%end %>
+        </div>
+</div>
+<% end %>
+
+<br>
+
+<%= link_to 'Nova Publicação', new_publicacao_path %>

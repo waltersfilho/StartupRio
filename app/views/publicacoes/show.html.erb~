@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Autor:</strong>
+  <%= @publicacao.autor %>
+</p>
+
+<p>
+  <strong>Titulo:</strong>
+  <%= @publicacao.titulo %>
+</p>
+
+<p>
+  <strong>Corpo:</strong>
+  <%= @publicacao.corpo %>
+</p>
+
+<% c=@publicacao.comentario.count %>
+<h3>
+    <%if c > 0 %>
+        <%= c %> 
+        <% if c > 1 %>
+            comentários
+        <% else %>
+            comentário
+        <% end %>
+    <%else%>
+        Sem comentários
+    <%end%>
+</h3>
+
+<%= link_to 'Editar', edit_publicacao_path(@publicacao) %> |
+<%= link_to 'Voltar', publicacoes_path %>

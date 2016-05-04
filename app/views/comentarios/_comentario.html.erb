@@ -1,0 +1,33 @@
+<div class="comments_wrapper clearfix">
+    <div class="pull-left">
+        <p class="lead">
+    <p><%= comentario.mensagem %></p>
+    <p><small>Enviado <strong><%= time_ago_in_words(comentario.created_at) %> atrás por
+      <% if comentario.user == current_user %>
+          você
+      <% else %>
+          <%= comentario.user.email %>
+      <%end%></strong></small>
+    </p>
+      <% if user_signed_in? %>
+          <div class="btn-group pull-right">
+            <%= link_to like_publicacao_comentario_path(comentario.publicacao, comentario), method: :put, class: "btn btn-sm btn-default" do %>
+                <span class="glyphicon glyphicon-thumbs-up"></span>
+                Like
+                <%= comentario.get_upvotes.size %>
+            <% end %>
+            <%= link_to dislike_publicacao_comentario_path(comentario.publicacao, comentario), method: :put, class: "btn btn-sm btn-default " do %>
+                <span class="glyphicon glyphicon-thumbs-down"></span>
+                Dislike
+                <%= comentario.get_downvotes.size %>
+            <%end%>
+     <% end %>
+    <%if (current_user == comentario.publicacao.user) or (current_user == comentario.user)%>
+          <%= link_to "Apagar comentário", [comentario.publicacao, comentario],
+          class: "btn btn-sm btn-default",
+          method: :delete, data: { confirm: "Tem certeza?" } %>
+          <hr>
+    <%end%>
+  </div>
+ </div>
+</div>

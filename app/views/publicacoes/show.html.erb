@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<div class="page-header">
+    <h1>
+      <%= @publicacao.titulo%><br>
+      <small class="author">Enviado há <strong><%= time_ago_in_words(@publicacao.updated_at) %> atrás por
+      <% if @publicacao.user == current_user %>
+          você
+      <% else %>
+          <%= @publicacao.user.email %></strong>
+      <%end%></small>
+    </h1>
+  <div class="lead">
+    <%= simple_format(@publicacao.corpo) %>
+    <div class="btn-group" role="group" aria-label="...">
+      <% if user_signed_in? %>
+          <%= link_to like_publicacao_path(@publicacao), method: :put, class: "btn btn-default" do %>
+              <span class="glyphicon glyphicon-thumbs-up"></span>
+              Like
+              <%= @publicacao.get_upvotes.size %>
+          <% end %>
+          <%= link_to dislike_publicacao_path(@publicacao), method: :put, class: "btn btn-default " do %>
+              <span class="glyphicon glyphicon-thumbs-down"></span>
+              Dislike
+              <%= @publicacao.get_downvotes.size %>
+          <% end %>
+            <%if current_user == @publicacao.user%>
+              <%= link_to 'Editar publicação', edit_publicacao_path(@publicacao), class: 'btn btn-default' %>
+              <%= link_to 'Deletar publicação', @publicacao, method: :delete, data: { confirm: 'Tem certeza?' }, class: 'btn btn-default' %>
+            <%end%>
+          <%end %>
+      <%= link_to 'Voltar', publicacoes_path, class: 'btn btn-default' %>
+    </div>
+  </div>
+</div>
+
+<% c=@publicacao.comentarios.count %>
+<h3 class="comentarios_title">
+  <%if c > 0 %>
+      <%= c %> 
+      <% if c > 1 %>
+        comentários
+      <% else %>
+        comentário
+      <% end %>
+  <%else%>
+      Sem comentários
+  <%end%>
+</h3>
+<div id="comentarios">
+  <%= render @publicacao.comentarios %>
+  <%= render "comentarios/form" %>
+</div>
+
+<%= link_to 'Editar', edit_publicacao_path(@publicacao) %> |
+<%= link_to 'Voltar', publicacoes_path %>

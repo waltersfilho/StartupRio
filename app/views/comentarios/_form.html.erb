@@ -1,0 +1,10 @@
+<% if user_signed_in? %>
+  <%= form_for([@publicacao, @publicacao.comentarios.build]) do |f| %>
+    <div class="field">
+      <%= f.text_area :mensagem %>
+    </div>
+    <div class="actions">
+      <%= f.submit 'Adicionar Comentário' %>
+    </div>
+  <% end %>
+<%end%>
